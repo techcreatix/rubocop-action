@@ -22,6 +22,7 @@ require 'time'
 }
 
 def create_check
+  put "@GITHUB_SHA", @GITHUB_SHA
   body = {
     "name" => @check_name,
     "head_sha" => @GITHUB_SHA,
@@ -32,6 +33,8 @@ def create_check
   http = Net::HTTP.new('api.github.com', 443)
   http.use_ssl = true
   path = "/repos/#{@owner}/#{@repo}/check-runs"
+  put "path", path
+  put "body", body.to_json
 
   resp = http.post(path, body.to_json, @headers)
 
